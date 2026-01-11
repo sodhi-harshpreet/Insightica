@@ -23,7 +23,7 @@
   const websiteId = script.getAttribute("data-website-id");
   const domain = script.getAttribute("data-domain");
 
-  const entryTime = Date.now();
+  const entryTime = Math.floor(Date.now() / 1000);
 
    const urlParams = new URLSearchParams(window.location.search);
     const utm_source = urlParams.get('utm_source')||'';
@@ -52,15 +52,15 @@
   });
 
   // ACTIVE TIME TRACKING
-  let activeStart = Date.now();
+  let activeStart = Math.floor(Date.now() / 1000);
   let totalActiveTime = 0;
 
   function pauseTracking() {
-    totalActiveTime += Date.now() - activeStart;
+    totalActiveTime += Math.floor(Date.now() / 1000) - activeStart;
   }
 
   function resumeTracking() {
-    activeStart = Date.now();
+    activeStart = Math.floor(Date.now() / 1000);
   }
 
   document.addEventListener("visibilitychange", () => {
@@ -82,7 +82,7 @@
         domain,
         visitorId,
         totalActiveTime,
-        exitTime: Date.now(),
+        exitTime: Math.floor(Date.now() / 1000),
       })
     );
   }

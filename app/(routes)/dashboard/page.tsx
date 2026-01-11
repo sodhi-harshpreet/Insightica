@@ -1,6 +1,6 @@
 "use client"
 import { Button } from '@/components/ui/button'
-import { WebsiteType } from '@/configs/type'
+import { WebsiteInfoType, WebsiteType } from '@/configs/type'
 import axios from 'axios'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -10,7 +10,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 
 
 function Dashboard() {
-    const [websiteList, setWebsiteList] = useState<WebsiteType[]>([])
+    const [websiteList, setWebsiteList] = useState<WebsiteInfoType[]>([])
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -58,7 +58,7 @@ function Dashboard() {
                     
                     {/* List of websites will go here */}
                     {websiteList?.map((website,index)=>(
-                        <WebsiteCard key={index} website={website} />
+                        <WebsiteCard key={index} websiteInfo={website} />
                     ))}
                 </div>  
         }
