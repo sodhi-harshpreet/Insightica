@@ -32,19 +32,19 @@ function WebsiteForm() {
 
     const [domain, setDomain] = useState('');
     const [timezone, setTimezone] = useState('');
-    const [enableLocalhostTracking, setEnableLocalhostTracking] = useState(false);
+    const [enableLocalHostTracking, setEnableLocalHostTracking] = useState(false);
     const [loading, setLoading] = useState(false);
     const router = useRouter();
     const onFormSubmit = async (e: any) => {
         e.preventDefault();
-        console.log({domain, timezone, enableLocalhostTracking});
+        console.log({domain, timezone, enableLocalHostTracking});
         setLoading(true);
         const websiteId=crypto.randomUUID();
         const result = await axios.post('/api/website', {
             websiteId:websiteId,
             domain,
             timezone,
-            enableLocalhostTracking
+            enableLocalHostTracking
         });
         console.log(result.data);
         if(result.data.data){
@@ -144,7 +144,7 @@ function WebsiteForm() {
                     </div> 
 
                     <div className='mt-5 flex items-center gap-2'>
-                        <Checkbox onCheckedChange={(value:boolean)=>setEnableLocalhostTracking(value)}/><span>Enable localhost tracking in development</span>
+                        <Checkbox onCheckedChange={(value:boolean)=>setEnableLocalHostTracking(value)}/><span>Enable localhost tracking in development</span>
                     </div>
                     <div className='mt-4 w-full'>
                     <Button className='w-full' disabled={loading} type='submit'>
