@@ -1,5 +1,3 @@
-const { exit } = require("process");
-
 (function () {
   console.log("✅ Insightica Analytics Loaded");
   console.log("Version 1.0.0");
