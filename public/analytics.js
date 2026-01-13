@@ -1,3 +1,4 @@
+const { exit } = require("process");
 
 (function () {
   console.log("✅ Insightica Analytics Loaded");
@@ -11,10 +12,21 @@
     );
   }
 
+  const session_duration = 12 * 60 * 60 * 1000; // 12 hours
+  const now = Date.now();
+
   let visitorId = localStorage.getItem("insightica_visitor_id");
-  if (!visitorId) {
+  let sessionTimestamp = localStorage.getItem("insightica_session_time");
+  if (!visitorId || (now - sessionTimestamp) > session_duration) {
+
+    if(visitorId){
+      localStorage.removeItem("insightica_visitor_id");
+      localStorage.removeItem("insightica_session_time");
+    }
+
     visitorId = generateVisitorId();
     localStorage.setItem("insightica_visitor_id", visitorId);
+    localStorage.setItem("insightica_session_time", now);
   }
 
   const script = document.currentScript;
@@ -83,6 +95,7 @@
         visitorId,
         totalActiveTime,
         exitTime: Math.floor(Date.now() / 1000),
+        exitUrl: window.location.href,
       })
     );
   }

@@ -19,7 +19,7 @@ function Dashboard() {
     const GetUserWebsites=async ()=> {
         setLoading(true);
         const result= await axios.get('/api/website');
-        console.log(result.data);
+        // console.log(result.data);
         setWebsiteList(result.data);
         setLoading(false);
     }

@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
 import { WebsiteInfoType, WebsiteType } from '@/configs/type'
 import { Globe } from 'lucide-react'
+import Link from 'next/link'
 import React from 'react'
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
 
@@ -34,39 +35,43 @@ const chartConfig = {
 
   return (
     <div>
-        <Card>
-            <CardHeader>
-                <CardTitle> 
-                    <div className='flex gap-2 items-center'>
-                        <Globe className='h-8 w-8 p-2 rounded-md bg-primary text-white'/>
-                        <h2 className='font-bold text-lg'>{websiteInfo?.website?.domain.replace("https://", "")}</h2>
-                    </div>
-                </CardTitle>
-            </CardHeader>
-            <CardContent>
-                <ChartContainer config={chartConfig} className='h-[80px] w-full'>
-                    <AreaChart
-                        accessibilityLayer
-                        data={chartData}
-                        margin={{
-                        left: 12,
-                        right: 12,
-                        }}
-                    >
-                        
-                        <Area
-                        dataKey="count"
-                        type="natural"
-                        fill="var(--color-desktop)"
-                        fillOpacity={0}
-                        stroke="var(--color-primary)"
-                        strokeWidth={2}
-                        />
-                    </AreaChart>
-                </ChartContainer>
-                <h2 className='text-sm mt-2'><strong>{websiteInfo?.analytics?.last24hVisitors} </strong>visitors</h2>
-            </CardContent>
-        </Card>
+        <Link href={`/dashboard/website/${websiteInfo?.website?.websiteId}`}>
+            <Card>
+                <CardHeader>
+                    <CardTitle> 
+                        <div className='flex gap-2 items-center'>
+                            <Globe className='h-8 w-8 p-2 rounded-md bg-primary text-white'/>
+                            <h2 className='font-bold text-lg'>{websiteInfo?.website?.domain.replace("https://", "")}</h2>
+                        </div>
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <ChartContainer config={chartConfig} className='h-[80px] w-full'>
+                        <AreaChart
+                            accessibilityLayer
+                            data={chartData}
+                            margin={{
+                            left: 12,
+                            right: 12,
+                            top:8,
+                            bottom: 8,
+                            }}
+                        >
+                            
+                            <Area
+                            dataKey="count"
+                            type="natural"
+                            fill="var(--color-desktop)"
+                            fillOpacity={0}
+                            stroke="var(--color-primary)"
+                            strokeWidth={2}
+                            />
+                        </AreaChart>
+                    </ChartContainer>
+                    <h2 className='text-sm mt-2'><strong>{websiteInfo?.analytics?.totalVisitors} </strong>visitors</h2>
+                </CardContent>
+            </Card>
+        </Link>
     </div>
   )
 }
