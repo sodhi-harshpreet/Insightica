@@ -157,6 +157,7 @@ export async function GET(req: NextRequest) {
     Object.entries(map).map(([name, uv]) => ({
       name,
       uv,
+      code: codeMap[name] ?? null,
       image: codeMap[name]
         ? `https://flagsapi.com/${codeMap[name]}/flat/64.png`
         : "/country.png",
@@ -169,6 +170,7 @@ export async function GET(req: NextRequest) {
     Object.entries(map).map(([name, uv]) => ({
       name,
       uv,
+      code: codeMap[name] ?? null,
       image: codeMap[name]
         ? `https://flagsapi.com/${codeMap[name]}/flat/64.png`
         : "/city.png",
@@ -181,6 +183,7 @@ export async function GET(req: NextRequest) {
     Object.entries(map).map(([name, uv]) => ({
       name,
       uv,
+        code: codeMap[name] ?? null,
       image: codeMap[name]
         ? `https://flagsapi.com/${codeMap[name]}/flat/64.png`
         : "/region.png",
@@ -224,31 +227,31 @@ export async function GET(req: NextRequest) {
             : [])
         )
       );
-    // if (views.length === 0) {
-    //   result.push({
-    //     website: site,
-    //     analytics: {
-    //       totalVisitors: 0,
-    //       last24hVisitors: 0,
-    //       totalSessions: 0,
-    //       totalActiveTime: 0,
-    //       avgActiveTime: 0,
-    //       hourlyVisitors: [],
-    //       dailyVisitors: [],
-    //       countries: [],
-    //       cities: [],
-    //       regions: [],
-    //       devices: [],
-    //       os: [],
-    //       browsers: [],
-    //       referrals: [],
-    //       refParams: [],
-    //       utmSources: [],
-    //       urls: [],
-    //     },
-    //   });
-    //   continue;
-    // }
+    if (views.length === 0) {
+      result.push({
+        website: site,
+        analytics: {
+          totalVisitors: 0,
+          last24hVisitors: 0,
+          totalSessions: 0,
+          totalActiveTime: 0,
+          avgActiveTime: 0,
+          hourlyVisitors: [],
+          dailyVisitors: [],
+          countries: [],
+          cities: [],
+          regions: [],
+          devices: [],
+          os: [],
+          browsers: [],
+          referrals: [],
+          refParams: [],
+          utmSources: [],
+          urls: [],
+        },
+      });
+      continue;
+    }
 
     /* ---------- UNIQUE VISITORS ---------- */
     const makeSetMap = () => ({} as Record<string, Set<string>>);

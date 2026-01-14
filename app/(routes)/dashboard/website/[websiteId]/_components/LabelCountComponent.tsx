@@ -1,4 +1,4 @@
-import { AnalytisType } from "@/configs/type";
+import { AnalyticsType } from "@/configs/type";
 import React from "react";
 
 type Props = {

@@ -15,9 +15,9 @@ export async function POST(req:NextRequest) {
     const browserInfo= parser.getBrowser().name
     const ip= req.headers.get("x-forwarded-for")?.split(",")[0] 
     || req.headers.get("x-real-ip") || '71.71.22.54'; // Fallback IP for local testing
-
+    let geoInfo=null;
     const geoRes = (await fetch(`http://ip-api.com/json/71.71.22.54`));
-    const geoInfo = await geoRes.json();
+    geoInfo = await geoRes.json();
 
    
     console.log("Device Info: ", deviceInfo);
