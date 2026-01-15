@@ -4,28 +4,27 @@ import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 import { UAParser } from "ua-parser-js";
 
-const CORS_HEADERS = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type, Authorization",
-};
-function corsHeaders(req: Request) {
-  const origin = req.headers.get("origin") ?? "*";
-
+// const CORS_HEADERS = {
+//   "Access-Control-Allow-Origin": "*",
+//   "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+//   "Access-Control-Allow-Headers": "Content-Type, Authorization",
+// };
+function corsHeaders() {
   return {
-    "Access-Control-Allow-Origin": origin,
+    "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, Authorization",
-    Vary: "Origin",
+    "Access-Control-Allow-Headers": "Content-Type",
   };
 }
 
-export async function OPTIONS(req: Request) {
+
+export async function OPTIONS() {
   return new NextResponse(null, {
     status: 204,
-    headers: corsHeaders(req),
+    headers: corsHeaders(),
   });
 }
+
 
 export async function POST(req: NextRequest) {
   try {
@@ -94,15 +93,16 @@ export async function POST(req: NextRequest) {
     }
     // console.log("Insert Result: ", result);
     return NextResponse.json(
-      { message: "Data received", data: result },
-      { headers: corsHeaders(req) }
-    );
+  { message: "Data received", data: result },
+  { headers: corsHeaders() }
+);
+
   } catch (err: any) {
     return NextResponse.json(
       { status: "error", message: err.message },
       {
         status: 500,
-        headers: corsHeaders(req),
+        headers: corsHeaders(),
       }
     );
   }

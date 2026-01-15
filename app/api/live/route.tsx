@@ -5,30 +5,25 @@ import { liveUserTable } from "@/configs/schema";
 import { and, eq, gt } from "drizzle-orm";
 import { UAParser } from "ua-parser-js";
 
-const CORS_HEADERS = {
+
+
+function corsHeaders() {
+  return {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, Authorization",
-}
-
-function corsHeaders(req: Request) {
-  const origin = req.headers.get("origin") ?? "*";
-
-  return {
-    "Access-Control-Allow-Origin": origin,
-    "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, Authorization",
-    "Vary": "Origin",
+    "Access-Control-Allow-Headers": "Content-Type",
   };
 }
 
 
-export async function OPTIONS(req: Request) {
+
+export async function OPTIONS() {
   return new NextResponse(null, {
     status: 204,
-    headers: corsHeaders(req),
+    headers: corsHeaders(),
   });
 }
+
 
 
 /* ------------------------ POST: Track Visitor ------------------------ */
@@ -111,8 +106,9 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(
   { message: "Data received" },
-  { headers: corsHeaders(req) }
+  { headers: corsHeaders() }
 );
+
 
     }
 
@@ -122,7 +118,7 @@ export async function POST(req: NextRequest) {
   { status: "error", message: err.message },
   {
     status: 500,
-    headers: corsHeaders(req),
+    headers: corsHeaders(),
   }
 );
 
@@ -150,6 +146,7 @@ export async function GET(req: NextRequest) {
     );
 
 return NextResponse.json(activeUsers, {
-  headers: corsHeaders(req),
+  headers: corsHeaders(),
 });
+
 }
