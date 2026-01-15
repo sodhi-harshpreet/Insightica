@@ -4,6 +4,26 @@ import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 import { UAParser } from "ua-parser-js";
 
+
+const CORS_HEADERS = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+}
+
+export async function OPTIONS(req:Request) {
+    const origin=req.headers.get("Origin") || "*";
+
+    return new NextResponse(null,{
+        status:200,
+        headers:{
+            "Access-Control-Allow-Origin": origin,
+            "Access-Control-Allow-Methods": "POST,OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type",
+        }
+    })
+}
+
 export async function POST(req:NextRequest) {
     const body=await req.json();
     console.log("body data :", body)
@@ -67,6 +87,9 @@ else{
     .where(eq(pageViewTable.visitorId, body.visitorId ))
     .returning();
 }
-    console.log("Insert Result: ", result);
-    return NextResponse.json({message:"Data received", data:result});
+    // console.log("Insert Result: ", result);
+    return NextResponse.json(
+    {message:"Data received", data:result},
+    {headers: CORS_HEADERS}
+    );
 }
