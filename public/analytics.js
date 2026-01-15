@@ -42,7 +42,7 @@
     const RefParams=window.location.href.split ('?')[1]||'';
 
   // ENTRY EVENT
-  fetch("http://localhost:3000/api/track", {
+  fetch("https://insightica.vercel.app/api/track", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -85,7 +85,7 @@
     pauseTracking();
 
     navigator.sendBeacon(
-      "http://localhost:3000/api/track",
+      "https://insightica.vercel.app/api/track",
       JSON.stringify({
         type: "exit",
         websiteId,
@@ -101,7 +101,7 @@
   window.addEventListener("beforeunload", handleExit);
 
   const sendLivePing=()=>{
-    fetch("http://localhost:3000/api/live", {
+    fetch("https://insightica.vercel.app/api/live", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
