@@ -5,6 +5,25 @@ import { liveUserTable } from "@/configs/schema";
 import { and, eq, gt } from "drizzle-orm";
 import { UAParser } from "ua-parser-js";
 
+const CORS_HEADERS = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+}
+
+export async function OPTIONS(req:Request) {
+    const origin=req.headers.get("Origin") || "*";
+
+    return new NextResponse(null,{
+        status:200,
+        headers:{
+            "Access-Control-Allow-Origin": origin,
+            "Access-Control-Allow-Methods": "POST,OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type",
+        }
+    })
+}
+
 /* ------------------------ POST: Track Visitor ------------------------ */
 export async function POST(req: NextRequest) {
   try {
@@ -78,8 +97,11 @@ export async function POST(req: NextRequest) {
         },
       });
 
-    return NextResponse.json({ status: "ok" });
-  } catch (err: any) {
+    return NextResponse.json(
+        {message:"Data received"},
+        {headers: CORS_HEADERS}
+        );  } 
+    catch (err: any) {
     // console.error("Visitor POST error:", err);
     return NextResponse.json(
       { status: "error", message: err.message },
