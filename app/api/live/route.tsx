@@ -11,18 +11,25 @@ const CORS_HEADERS = {
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
 }
 
-export async function OPTIONS(req:Request) {
-    const origin=req.headers.get("Origin") || "*";
+function corsHeaders(req: Request) {
+  const origin = req.headers.get("origin") ?? "*";
 
-    return new NextResponse(null,{
-        status:200,
-        headers:{
-            "Access-Control-Allow-Origin": origin,
-            "Access-Control-Allow-Methods": "POST,OPTIONS",
-            "Access-Control-Allow-Headers": "Content-Type",
-        }
-    })
+  return {
+    "Access-Control-Allow-Origin": origin,
+    "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    "Vary": "Origin",
+  };
 }
+
+
+export async function OPTIONS(req: Request) {
+  return new NextResponse(null, {
+    status: 204,
+    headers: corsHeaders(req),
+  });
+}
+
 
 /* ------------------------ POST: Track Visitor ------------------------ */
 export async function POST(req: NextRequest) {
@@ -97,16 +104,28 @@ export async function POST(req: NextRequest) {
         },
       });
 
+    // return NextResponse.json(
+    //     {message:"Data received"},
+    //     {headers: CORS_HEADERS}
+    //     );  
+
     return NextResponse.json(
-        {message:"Data received"},
-        {headers: CORS_HEADERS}
-        );  } 
+  { message: "Data received" },
+  { headers: corsHeaders(req) }
+);
+
+    }
+
     catch (err: any) {
     // console.error("Visitor POST error:", err);
     return NextResponse.json(
-      { status: "error", message: err.message },
-      { status: 500 }
-    );
+  { status: "error", message: err.message },
+  {
+    status: 500,
+    headers: corsHeaders(req),
+  }
+);
+
   }
 }
 
@@ -130,5 +149,7 @@ export async function GET(req: NextRequest) {
       )
     );
 
-  return NextResponse.json(activeUsers);
+return NextResponse.json(activeUsers, {
+  headers: corsHeaders(req),
+});
 }
