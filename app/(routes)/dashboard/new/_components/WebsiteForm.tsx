@@ -37,7 +37,7 @@ function WebsiteForm() {
     const router = useRouter();
     const onFormSubmit = async (e: any) => {
         e.preventDefault();
-        console.log({domain, timezone, enableLocalHostTracking});
+        // console.log({domain, timezone, enableLocalHostTracking});
         setLoading(true);
         const websiteId=crypto.randomUUID();
         const result = await axios.post('/api/website', {
@@ -46,7 +46,7 @@ function WebsiteForm() {
             timezone,
             enableLocalHostTracking
         });
-        console.log(result.data);
+        // console.log(result.data);
         if(result.data.data){
             router.push('/dashboard/new?step=script&websiteId='+result?.data?.data?.websiteId+'&domain='+result?.data?.data?.domain);
         }

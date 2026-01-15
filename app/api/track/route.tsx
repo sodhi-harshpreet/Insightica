@@ -20,11 +20,11 @@ export async function POST(req:NextRequest) {
     geoInfo = await geoRes.json();
 
    
-    console.log("Device Info: ", deviceInfo);
-    console.log("OS Info: ", osInfo);
-    console.log("Browser Info: ", browserInfo);
-    console.log("IP Address: ", ip);
-    console.log("Geo Info: ", geoInfo);
+    // console.log("Device Info: ", deviceInfo);
+    // console.log("OS Info: ", osInfo);
+    // console.log("Browser Info: ", browserInfo);
+    // console.log("IP Address: ", ip);
+    // console.log("Geo Info: ", geoInfo);
 
 
     // process and store the data in the database

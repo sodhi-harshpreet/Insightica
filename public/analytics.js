@@ -1,5 +1,5 @@
 (function () {
-  console.log("✅ Insightica Analytics Loaded");
+  console.log("Insightica Analytics Loaded");
   console.log("Version 1.0.0");
 
   // Generate visitor ID
@@ -99,5 +99,19 @@
   }
 
   window.addEventListener("beforeunload", handleExit);
+
+  const sendLivePing=()=>{
+    fetch("http://localhost:3000/api/live", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+          websiteId,
+          visitorId,
+          last_seen:Date.now().toString(),
+          url: window.location.href,
+      }),
+    });
+  }
+  setInterval(sendLivePing,10000); // every 10 sec
 //   window.addEventListener("pagehide", handleExit);
 })();

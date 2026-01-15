@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/popover";
 import { DateRange } from "react-day-picker";
 import { fr, se } from "date-fns/locale";
+import Link from "next/link";
 
 type Props = {
   websiteList: WebsiteType[];
@@ -153,9 +154,12 @@ function FormInput({ websiteList, setFormData , setReloadData }: Props) {
           <RefreshCcw className="h-4 w-4" />
         </Button>
       </div>
-      <Button variant={"outline"}>
-        <SettingsIcon />
-      </Button>
+
+      <Link href={`/dashboard/website/${websiteId}/settings`}>
+        <Button variant={"outline"}>
+          <SettingsIcon />
+        </Button>
+      </Link>
     </div>
   );
 }

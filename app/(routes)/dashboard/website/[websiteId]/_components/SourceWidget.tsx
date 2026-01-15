@@ -53,7 +53,7 @@ function SourceWidget({ websiteAnalytics, loading }: Props) {
         {/* SVG image */}
         <image href={imageUrl} width={16} height={16} />
         {/* SVG text */}
-        <text x={20} y={12} fontSize={12} fill="#ffffff">
+        <text x={20} y={12} fontSize={12} fill="#000000">
           {value}
         </text>
       </g>

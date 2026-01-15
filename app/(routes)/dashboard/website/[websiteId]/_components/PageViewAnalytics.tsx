@@ -17,7 +17,9 @@ type Props = {
   websiteInfo: WebsiteInfoType | undefined | null;
   loading?: boolean;
   analyticType?: string;
-};
+  liveUserCount?: number;
+}
+
 
 const chartConfig = {
   desktop: {
@@ -26,7 +28,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-function PageViewAnalytics({ websiteInfo, loading, analyticType }: Props) {
+function PageViewAnalytics({ websiteInfo, loading, analyticType,liveUserCount }: Props) {
   const webAnalytic = websiteInfo?.analytics;
   return (
     <div className="mt-7">
@@ -56,7 +58,7 @@ function PageViewAnalytics({ websiteInfo, loading, analyticType }: Props) {
             }
           />
           <Separator orientation="vertical" className="h-12" />
-          <LabelCountComponent label="Live Users" value={5} />
+          <LabelCountComponent label="Live Users" value={liveUserCount??0} />
         </CardContent>
         <CardContent className="p-5 mt-5">
           <ChartContainer config={chartConfig} className="h-94 w-full">

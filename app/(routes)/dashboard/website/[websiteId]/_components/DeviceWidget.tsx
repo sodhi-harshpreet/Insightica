@@ -85,8 +85,10 @@ function DeviceWidget({ websiteAnalytics, loading }: Props) {
                       dataKey="name"
                       position="insideLeft"
                       offset={8}
-                      className="fill-(--color-label)"
+                    //   className="fill-(--color-label)"
                       fontSize={12}
+                      fill="#000000"
+                      
                     //   content={BarLabelWithImage}
                     />
                   </Bar>
@@ -129,8 +131,9 @@ function DeviceWidget({ websiteAnalytics, loading }: Props) {
                       dataKey="name"
                       position="insideLeft"
                       offset={8}
-                      className="fill-(--color-label)"
+                    //   className="fill-(--color-label)"
                       fontSize={12}
+                      fill="#000000"
                     //   content={BarLabelWithImage}
                     />
                   </Bar>
@@ -173,9 +176,9 @@ function DeviceWidget({ websiteAnalytics, loading }: Props) {
                       dataKey="name"
                       position="insideLeft"
                       offset={8}
-                      className="fill-(--color-label)"
+                    //   className="fill-(--color-label)"
                       fontSize={12}
-                    //   content={BarLabelWithImage}
+                      fill="#000000"
                     />
                   </Bar>
                 </BarChart>
