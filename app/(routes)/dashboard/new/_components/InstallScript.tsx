@@ -17,7 +17,7 @@ export default function InstallScript() {
   defer
   data-website-id="${websiteId}"
   data-domain="${domain}"
-  src="http://localhost:3000/analytics.js">
+  src="${process.env.NEXT_PUBLIC_HOST_URL}/analytics.js">
 </script>`;
 
   const handleCopy = async () => {

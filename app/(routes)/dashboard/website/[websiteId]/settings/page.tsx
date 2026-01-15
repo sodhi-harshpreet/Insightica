@@ -68,7 +68,7 @@ function WebsiteSettings() {
   defer
   data-website-id="${websiteId}"
   data-domain="${websiteDetails?.domain}"
-  src="http://localhost:3000/analytics.js">
+  src="${process.env.NEXT_PUBLIC_HOST_URL}/analytics.js">
 </script>`;
 
   const onDeleteWebsite = async () => {
