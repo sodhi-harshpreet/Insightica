@@ -1,6 +1,9 @@
-import { SignInButton, UserButton, useUser } from "@clerk/nextjs";
+import { PricingTable, SignInButton, UserButton, useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import ToggleTheme from "./ToggleTheme";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+
 
 function AppHeader() {
   const { user } = useUser();
@@ -17,6 +20,7 @@ function AppHeader() {
   <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
 
     {/* Logo */}
+    <Link href="/dashboard">
     <div className="flex items-center gap-3">
       <Image
         src="/logo2.png"
@@ -29,6 +33,7 @@ function AppHeader() {
         Insightica
       </span>
     </div>
+    </Link>
 
     {/* Right */}
     <div className="flex items-center gap-4">
@@ -47,7 +52,7 @@ function AppHeader() {
           </button>
         </SignInButton>
       ) : (
-        <>
+        <div className="flex items-center gap-2 ">
           <ToggleTheme />
 
           <UserButton
@@ -58,7 +63,25 @@ function AppHeader() {
               },
             }}
           />
-        </>
+          <Link href="/dashboard/pricing">
+  <Button
+    variant="outline"
+    className="
+      rounded-full
+      border-amber-300/60 dark:border-amber-500/30
+      text-amber-700 dark:text-amber-400
+      bg-amber-50/40 dark:bg-amber-500/10
+      hover:bg-amber-100/60 dark:hover:bg-amber-500/20
+      hover:text-amber-800 dark:hover:text-amber-300
+      transition-all duration-200
+    "
+  >
+    Subscription
+  </Button>
+</Link>
+
+
+        </div>
       )}
     </div>
   </div>

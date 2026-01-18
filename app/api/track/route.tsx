@@ -25,6 +25,21 @@ export async function OPTIONS() {
   });
 }
 
+function getClientIp(req: Request) {
+    const vercelIp = req.headers.get("x-vercel-forwarded-for");
+    if (vercelIp) {
+        return vercelIp.split(",")[0].trim();
+    }
+    const xff = req.headers.get("x-forwarded-for");
+    if (xff) {
+        return xff.split(",")[0].trim();
+    }
+    const realIp = req.headers.get("x-real-ip");
+    if (realIp) {
+        return realIp;
+    }
+    return null
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -36,14 +51,12 @@ export async function POST(req: NextRequest) {
     const deviceInfo = parser.getDevice().type;
     const osInfo = parser.getOS().name;
     const browserInfo = parser.getBrowser().name;
-    const ip =
-      req.headers.get("x-forwarded-for")?.split(",")[0] ||
-      req.headers.get("x-real-ip") ||
-      "71.71.22.54"; // Fallback IP for local testing
-    let geoInfo = null;
-    const geoRes = await fetch(`http://ip-api.com/json/71.71.22.54`);
-    geoInfo = await geoRes.json();
-
+    const ip =getClientIp(req) || "127.0.0.1";
+    let geoInfo=null
+    if(ip && !ip.startsWith("10.") && !ip.startsWith("192.168.")){
+        const geoRes = await fetch(`http://ip-api.com/json/${ip}`);
+        geoInfo = await geoRes.json();
+    }
     // console.log("Device Info: ", deviceInfo);
     // console.log("OS Info: ", osInfo);
     // console.log("Browser Info: ", browserInfo);

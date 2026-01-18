@@ -1,15 +1,33 @@
 import { db } from "@/configs/db";
 import { pageViewTable, websitesTable } from "@/configs/schema";
-import { currentUser } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { da } from "date-fns/locale";
 import { and, eq, desc, sql, gte, lte } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
-import { toZonedTime } from "date-fns-tz";
+import { fromZonedTime, toZonedTime } from "date-fns-tz";
+import { startOfDay, endOfDay } from "date-fns";
+
 
 export async function POST(req: NextRequest) {
   const { websiteId, domain, timezone, enableLocalHostTracking } =
     await req.json();
   const user = await currentUser();
+  const {has}=await auth();
+  const hasPremiumAccess = has({ plan: 'monthly' })
+
+  if(!hasPremiumAccess){
+    const result = await db
+      .select()
+      .from(websitesTable)
+      .where(
+        eq(websitesTable.userEmail, user?.primaryEmailAddress?.emailAddress as string)
+      );
+      if(result.length>0){
+        return NextResponse.json({
+          message: "Upgrade to Pro to add more websites"
+        }); 
+      }
+  }
 
   const existingDomain = await db
     .select()
@@ -88,6 +106,8 @@ const formatDateInTZ = (date: Date, timeZone: string) =>
     day: "2-digit",
   }).format(date);
 
+
+  
 export async function GET(req: NextRequest) {
   const user = await currentUser();
   if (!user) {
@@ -99,13 +119,8 @@ export async function GET(req: NextRequest) {
   const to = req.nextUrl.searchParams.get("to");
   const websiteOnly = req.nextUrl.searchParams.get("websiteOnly");
 
-  const fromUnix = from
-    ? Math.floor(new Date(`${from}T00:00:00`).getTime() / 1000)
-    : null;
+  
 
-  const toUnix = to
-    ? Math.floor(new Date(`${to}T23:59:59`).getTime() / 1000)
-    : null;
 
   const nowUnix = Math.floor(Date.now() / 1000);
   const last24hUnix = nowUnix - 24 * 60 * 60;
@@ -231,6 +246,24 @@ export async function GET(req: NextRequest) {
     --------------------------------------------- */
   for (const site of websites) {
     const siteTZ = getSafeTimeZone(site.timezone);
+    const makeUnixRange = (from: string | null, to: string | null, tz: string) => {
+    if (!from || !to) return { fromUnix: null, toUnix: null };
+
+    // Treat from/to as date-only in tz, not server timezone
+    const fromLocal = startOfDay(new Date(`${from}T00:00:00`));
+    const toLocal = endOfDay(new Date(`${to}T00:00:00`));
+
+    // convert those tz boundaries to UTC
+    const fromUTC = fromZonedTime(fromLocal, tz);
+    const toUTC = fromZonedTime(toLocal, tz);
+
+    return {
+      fromUnix: Math.floor(fromUTC.getTime() / 1000),
+      toUnix: Math.floor(toUTC.getTime() / 1000),
+    };
+  };
+    const { fromUnix, toUnix } = makeUnixRange(from, to, siteTZ);
+
 
     const views = await db
       .select()
