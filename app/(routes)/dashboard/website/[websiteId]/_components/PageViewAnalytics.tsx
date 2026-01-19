@@ -30,7 +30,7 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 /**
- * ✅ Animation helper: counts from `from` to `to`
+ *  Animation helper: counts from `from` to `to`
  */
 function animateNumber({
   from,
@@ -143,7 +143,7 @@ export default function PageViewAnalytics({
 }: Props) {
   const webAnalytic = websiteInfo?.analytics;
 
-  // ✅ raw loading from backend/API
+  // raw loading from backend/API
   const rawLoading =
     loading ||
     !webAnalytic ||
@@ -152,7 +152,7 @@ export default function PageViewAnalytics({
     webAnalytic.totalActiveTime === undefined ||
     webAnalytic.avgActiveTime === undefined;
 
-  // ✅ current dataset (whatever user selected)
+  //  current dataset (whatever user selected)
   const visitors = useMemo(
     () => Number(webAnalytic?.totalVisitors ?? 0),
     [webAnalytic?.totalVisitors]
@@ -174,7 +174,7 @@ export default function PageViewAnalytics({
   );
 
   /**
-   * ✅ GLOBAL baseline snapshot:
+   * GLOBAL baseline snapshot:
    * stores FIRST successful dataset as "latest/current"
    */
   const latestSnapshotRef = useRef<null | {
@@ -186,7 +186,7 @@ export default function PageViewAnalytics({
 
   const hasSavedLatestRef = useRef(false);
 
-  // ✅ save only once when first real dataset arrives
+  //  save only once when first real dataset arrives
   useEffect(() => {
     if (!rawLoading && !hasSavedLatestRef.current) {
       latestSnapshotRef.current = {
@@ -200,7 +200,7 @@ export default function PageViewAnalytics({
   }, [rawLoading, visitors, pageViews, totalActiveMins, avgActiveMins]);
 
   /**
-   * ✅ growth is always calculated like:
+   * growth is always calculated like:
    * baseline = selected range
    * current  = latestSnapshot(first load)
    */
@@ -229,7 +229,7 @@ export default function PageViewAnalytics({
   }, [visitors, pageViews, totalActiveMins, avgActiveMins]);
 
   /**
-   * ✅ Trigger key for animations
+   *  Trigger key for animations
    */
   const resetKey = useMemo(() => `${analyticType}-${visitors}-${pageViews}-${totalActiveMins}-${avgActiveMins}`, [
     analyticType,
@@ -239,11 +239,11 @@ export default function PageViewAnalytics({
     avgActiveMins,
   ]);
 
-  // ✅ UI phase controller
+  //  UI phase controller
   const [phase, setPhase] = useState<Phase>(rawLoading ? "skeleton" : "idle");
   const displayLoading = phase === "skeleton";
 
-  // ✅ Animated display values
+  //  Animated display values
   const [visitorsDisplay, setVisitorsDisplay] = useState(0);
   const [pageViewsDisplay, setPageViewsDisplay] = useState(0);
   const [totalActiveDisplay, setTotalActiveDisplay] = useState(0);
@@ -266,7 +266,7 @@ export default function PageViewAnalytics({
   }, [visitorsDisplay, pageViewsDisplay, totalActiveDisplay, avgActiveDisplay]);
 
   /**
-   * ✅ Start countdown on refresh/reset
+   * Start countdown on refresh/reset
    */
   useEffect(() => {
     if (rawLoading && phase !== "skeleton" && phase !== "countdown") {
@@ -276,7 +276,7 @@ export default function PageViewAnalytics({
   }, [rawLoading]);
 
   /**
-   * ✅ Phase machine
+   * Phase machine
    */
   useEffect(() => {
     let cleanupFns: Array<() => void> = [];
@@ -289,7 +289,7 @@ export default function PageViewAnalytics({
         animateNumber({
           from: start.visitors,
           to: 0,
-          duration: 300,
+          duration: 650,
           onUpdate: setVisitorsDisplay,
         })
       );
@@ -297,7 +297,7 @@ export default function PageViewAnalytics({
         animateNumber({
           from: start.pageViews,
           to: 0,
-          duration: 300,
+          duration: 650,
           onUpdate: setPageViewsDisplay,
         })
       );
@@ -305,7 +305,7 @@ export default function PageViewAnalytics({
         animateNumber({
           from: start.totalActive,
           to: 0,
-          duration: 300,
+          duration: 650,
           onUpdate: setTotalActiveDisplay,
         })
       );
@@ -313,7 +313,7 @@ export default function PageViewAnalytics({
         animateNumber({
           from: start.avgActive,
           to: 0,
-          duration: 300,
+          duration: 650,
           onUpdate: setAvgActiveDisplay,
           onDone: () => setPhase("skeleton"),
         })
@@ -353,7 +353,7 @@ export default function PageViewAnalytics({
     };
   }, [phase, rawLoading, resetKey, visitors, pageViews, totalActiveMins, avgActiveMins]);
 
-  // ✅ Chart Data
+  // Chart Data
   const chartData =
     analyticType === "hourly"
       ? webAnalytic?.hourlyVisitors

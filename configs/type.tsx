@@ -27,6 +27,7 @@ export type AnalyticsType = {
     devices:DeviceType[],
     browsers:BrowserType[],
     os:OSType[],
+    last24hVisitors:number
 }
 
 export type CityType={

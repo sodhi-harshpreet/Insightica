@@ -78,11 +78,8 @@ function FormInput({ websiteList, setFormData, setReloadData }: Props) {
 
   return (
     <div className="w-full">
-      {/* ✅ Top-level responsive container */}
       <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-        {/* ✅ Left controls */}
         <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-          {/* Website select */}
           <Select
             value={(websiteId as string) || ""}
             onValueChange={(v) => router.push(`/dashboard/website/${v}`)}
@@ -126,7 +123,6 @@ function FormInput({ websiteList, setFormData, setReloadData }: Props) {
               >
                 <CalendarIcon className="mr-2 h-4 w-4 text-muted-foreground" />
 
-                {/* ✅ Truncate on mobile */}
                 <span className="truncate">{dateLabel}</span>
               </Button>
             </PopoverTrigger>
@@ -161,7 +157,6 @@ function FormInput({ websiteList, setFormData, setReloadData }: Props) {
             </PopoverContent>
           </Popover>
 
-          {/* Analytic Type select */}
           <Select value={analyticType} onValueChange={setAnalyticType}>
             <SelectTrigger
               className="
@@ -180,7 +175,6 @@ function FormInput({ websiteList, setFormData, setReloadData }: Props) {
             </SelectContent>
           </Select>
 
-          {/* Refresh button */}
           <Button
             variant="outline"
             onClick={() => setReloadData(true)}
@@ -195,7 +189,6 @@ function FormInput({ websiteList, setFormData, setReloadData }: Props) {
           </Button>
         </div>
 
-        {/* ✅ Right controls */}
         <div className="flex items-center justify-end gap-2">
           <Link href={`/dashboard/website/${websiteId}/settings`}>
             <Button
